@@ -19,6 +19,16 @@ db.open(function(err, db) {
   }
 });
 
+exports.findById = function(req, res) {
+  var id = req.params.id;
+  console.log('Retrieving restaurant: ' + id);
+  db.collection('restaurants', function(err, collection) {
+    collection.findOne({'_id': new ObjectID(id)}, function(err, item) {
+      res.send(item);
+    });
+  });
+};
+
 exports.findAll = function(req, res) {
   console.log('Retrieving all restaurants');
   db.collection('restaurants', function(err, collection) {
