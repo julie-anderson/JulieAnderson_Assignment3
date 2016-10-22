@@ -19,6 +19,16 @@ db.open(function(err, db) {
   }
 });
 
+
+exports.findAll = function(req, res) {
+  console.log('Retrieving all restaurants');
+  db.collection('restaurants', function(err, collection) {
+    collection.find().toArray(function(err, items) {
+      res.send(items);
+    });
+  });
+};
+
 exports.findById = function(req, res) {
   var id = req.params.id;
   console.log('Retrieving restaurant: ' + id);
@@ -53,7 +63,7 @@ exports.updateRestaurant = function(req, res) {
   var restaurant = req.body;
   console.log('Updating restaurant');
   db.collection('restaurants', function(err, collection) {
-    collection.update(restaurant,  function(err, item) {
+    collection.update({'_id': new ObjectID(id)}, restaurant,  function(err, item) {
         res.send(item);
       });
   });
@@ -63,8 +73,8 @@ exports.deleteRestaurant = function(req, res) {
   var id = req.params.id;
   console.log('Deleting restaurant');
   db.collection('restaurants', function(err, collection) {
-    collection.delete({'_id': new ObjectID(id)}, function(err, item) {
-      res.send(item);
+    collection.remove({'_id': new ObjectID(id)}, function(err, item) {
+      res.send(req.body);
     });
   });
 }
