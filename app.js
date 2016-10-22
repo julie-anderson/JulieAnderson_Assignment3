@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var restaurants = require('./routes/restaurants');
-var wines = require('./routes/wines');
 
 var app = express();
 
@@ -26,7 +25,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.get('/restaurants', restaurants.findAll);
 app.get('/restaurants/:id', restaurants.findById);
-app.post('/wines', wines.addRecord);
+app.post('/restaurants', restaurants.addRestaurant);
+app.put('/restaurants', restaurants.updateRestaurant);
+
+
 
 
 // catch 404 and forward to error handler

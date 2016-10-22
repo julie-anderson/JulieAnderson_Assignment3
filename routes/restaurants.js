@@ -37,3 +37,27 @@ exports.findAll = function(req, res) {
     });
   });
 };
+
+exports.addRestaurant = function(req, res) {
+  var restaurant = req.body;
+  console.log('Adding restaurant');
+  db.collection('restaurants', function(err, collection) {
+    collection.insert(restaurant, function(err, item) {
+        res.send(item);
+      });
+  });
+}
+
+exports.updateRestaurant = function(req, res) {
+  var id = req.params.id;
+  var restaurant = req.body;
+  console.log('Updating restaurant');
+  db.collection('restaurants', function(err, collection) {
+    collection.update(restaurant,  function(err, item) {
+        res.send(item);
+      });
+  });
+}
+
+
+
