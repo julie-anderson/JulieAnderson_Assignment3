@@ -26,7 +26,8 @@ app.use('/', routes);
 app.get('/restaurants', restaurants.findAll);
 app.get('/restaurants/:id', restaurants.findById);
 app.post('/restaurants', restaurants.addRestaurant);
-app.put('/restaurants', restaurants.updateRestaurant);
+app.put('/restaurants/:id', restaurants.updateRestaurant);
+app.delete('/restaurants/:id', restaurants.deleteRestaurant);
 
 
 

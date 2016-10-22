@@ -59,5 +59,16 @@ exports.updateRestaurant = function(req, res) {
   });
 }
 
+exports.deleteRestaurant = function(req, res) {
+  var id = req.params.id;
+  console.log('Deleting restaurant');
+  db.collection('restaurants', function(err, collection) {
+    collection.delete({'_id': new ObjectID(id)}, function(err, item) {
+      res.send(item);
+    });
+  });
+}
+
+
 
 
