@@ -63,8 +63,8 @@ exports.updateRestaurant = function(req, res) {
   var restaurant = req.body;
   console.log('Updating restaurant');
   db.collection('restaurants', function(err, collection) {
-    collection.update({'_id': new ObjectID(id)}, restaurant,  function(err, item) {
-        res.send(item);
+    collection.update({'_id': new ObjectID(id)}, restaurant,  function(err, result) {
+        res.send(restaurant);
       });
   });
 }
