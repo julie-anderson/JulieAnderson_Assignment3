@@ -13,6 +13,11 @@ var sendJsonResponse = function(res, status, content){
   res.json(content);
 };
 
+function handleError(res, reason, message, code) {
+  console.log("ERROR: " + reason);
+  res.status(code || 500).json({"error": message});
+}
+
 db.open(function(err, db) {
   if(!err) {
     console.log("Connected to 'test' database");
@@ -27,12 +32,12 @@ db.open(function(err, db) {
 
 exports.findAll = function(req, res) {
   console.log('Retrieving all restaurants');
-  //db.collection('restaurants', function(err, collection) {
-    //collection.find().toArray(function(err, items) {
-      //res.send(items);
-      res.render('index', {title: 'restaurnats'})
-    //});
-  //});
+  db.collection('restaurants', function(err, collection) {
+    collection.find().toArray(function(err, items) {
+      res.send(items);
+
+    });
+  });
 };
 
 exports.findById = function(req, res) {
@@ -75,7 +80,19 @@ exports.updateRestaurant = function(req, res) {
   });
 }
 
+
 exports.deleteRestaurant = function(req, res) {
+  db.collection('restaurants').deleteOne({_id: new ObjectID(req.params.id)},function(err, result){
+    if(err) {
+      handleError(res, err.message, "Restaurant was not deleted!");
+    }
+    else{
+      res.status(204).end();
+    }
+  })
+}
+
+/*exports.deleteRestaurant = function(req, res) {
   var id = req.params.id;
   console.log('Deleting restaurant');
   if (id){
@@ -98,6 +115,6 @@ exports.deleteRestaurant = function(req, res) {
   }
 
 
-
+*/
 
 
