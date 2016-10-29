@@ -8,6 +8,11 @@ var Db = require('mongodb').Db,
 var server = new Server('localhost', 27017, {auto_reconnect: true});
 db = new Db('test', server);
 
+var sendJsonResponse = function(res, status, content){
+  res.status(status);
+  res.json(content);
+};
+
 db.open(function(err, db) {
   if(!err) {
     console.log("Connected to 'test' database");
@@ -22,11 +27,12 @@ db.open(function(err, db) {
 
 exports.findAll = function(req, res) {
   console.log('Retrieving all restaurants');
-  db.collection('restaurants', function(err, collection) {
-    collection.find().toArray(function(err, items) {
-      res.send(items);
-    });
-  });
+  //db.collection('restaurants', function(err, collection) {
+    //collection.find().toArray(function(err, items) {
+      //res.send(items);
+      res.render('index', {title: 'restaurnats'})
+    //});
+  //});
 };
 
 exports.findById = function(req, res) {
@@ -72,12 +78,25 @@ exports.updateRestaurant = function(req, res) {
 exports.deleteRestaurant = function(req, res) {
   var id = req.params.id;
   console.log('Deleting restaurant');
-  db.collection('restaurants', function(err, collection) {
-    collection.remove({'_id': new ObjectID(id)}, function(err, item) {
-      res.send(req.body);
-    });
-  });
-}
+  if (id){
+    db.collection('restaurants', function(err, collection) {
+      collection.remove({'_id': new ObjectID(id)}, function(err, item) {
+        if (err) {
+          sendJsonResponse(res, 404, err);
+          return;
+        }
+        sendJsonResponse(res, 204, null);
+  }
+  )}
+    )}
+  else {
+
+      sendJsonResponse(res, 404, {
+        "message": "no such id"
+      });
+    };
+  }
+
 
 
 
